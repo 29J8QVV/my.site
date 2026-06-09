@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Модный Гардероб | Интернет-магазин одежды</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <i class="fas fa-tshirt"></i> Модный Гардероб
+            </div>
+            <div class="search-cart">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Поиск по названию...">
+                </div>
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <!-- Hero секция -->
+    <div class="hero-banner">
+        <div class="hero-text">
+            <h2>Осенняя коллекция<br>2024</h2>
+            <p>Стильные футболки, джинсы и аксессуары для создания идеального образа. Скидки до -30% на новую коллекцию!</p>
+            <button class="hero-btn" id="heroShopBtn">Выбрать вещи <i class="fas fa-arrow-right"></i></button>
+        </div>
+        <div class="hero-img">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&h=320&fit=crop" alt="модная одежда">
+        </div>
+    </div>
+
+    <!-- Категории -->
+    <div class="category-tabs" id="categoryTabs">
+        <button class="cat-btn active" data-cat="all"><i class="fas fa-grid-2"></i> Все товары</button>
+        <button class="cat-btn" data-cat="футболки"><i class="fas fa-tshirt"></i> Футболки</button>
+        <button class="cat-btn" data-cat="джинсы"><i class="fas fa-jeans"></i> Джинсы</button>
+        <button class="cat-btn" data-cat="аксессуары"><i class="fas fa-gem"></i> Аксессуары</button>
+    </div>
+
+    <!-- Сортировка -->
+    <div class="sort-bar">
+        <div class="sort-left">
+            <h3 class="section-title" id="dynamicTitle">Все товары</h3>
+            <span id="resultCount" class="result-count"></span>
+        </div>
+        <div class="sort-right">
+            <label>Сортировать:</label>
+            <select id="sortSelect">
+                <option value="default">По умолчанию</option>
+                <option value="price-asc">По возрастанию цены</option>
+                <option value="price-desc">По убыванию цены</option>
+                <option value="name">По названию</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Сетка товаров с фотографиями -->
+    <div id="productsGrid" class="products-grid"></div>
+</main>
+
+<!-- Модальное окно быстрого выбора -->
+<div id="productModal" class="product-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Быстрый выбор</h2>
+            <button class="modal-close" id="modalCloseBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-product-info">
+                <img id="modalProductImage" class="modal-product-image" src="" alt="">
+                <div class="modal-product-details">
+                    <h3 id="modalProductName">Название товара</h3>
+                    <div class="modal-product-price" id="modalProductPrice">0 ₽</div>
+                </div>
+            </div>
+            
+            <div class="option-group" id="sizeGroup">
+                <label class="option-label">Выберите размер:</label>
+                <div class="size-options" id="sizeOptions"></div>
+            </div>
+            
+            <div class="option-group" id="colorGroup">
+                <label class="option-label">Выберите цвет:</label>
+                <div class="color-options" id="colorOptions"></div>
+            </div>
+            
+            <div class="option-group">
+                <label class="option-label">Количество:</label>
+                <div class="quantity-selector">
+                    <button class="qty-modal-btn" id="modalQtyMinus">−</button>
+                    <input type="number" id="modalQuantity" value="1" min="1" max="99">
+                    <button class="qty-modal-btn" id="modalQtyPlus">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-cancel" id="modalCancelBtn">Отмена</button>
+            <button class="modal-add" id="modalAddToCartBtn">Добавить в корзину</button>
+        </div>
+    </div>
+</div>
+
+<!-- Корзина -->
+<div id="cartOverlay" class="cart-overlay"></div>
+<div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+        <span><i class="fas fa-bag-shopping"></i> Моя корзина</span>
+        <button class="close-cart" id="closeCartBtn">&times;</button>
+    </div>
+    <div id="cartItemsContainer" class="cart-items"></div>
+    <div class="cart-footer">
+        <div class="total-row">
+            <span>Итого:</span>
+            <span id="cartTotalPrice" class="total-price-value">0 ₽</span>
+        </div>
+        <button id="checkoutBtn" class="checkout-btn">Оформить заказ</button>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>Модный Гардероб</h4>
+                <p>Стиль, качество, вдохновение</p>
+            </div>
+            <div class="footer-col">
+                <h4>Категории</h4>
+                <p>Футболки · Джинсы · Аксессуары</p>
+            </div>
+            <div class="footer-col">
+                <h4>Контакты</h4>
+                <p>info@modny-garderob.ru</p>
+                <p>+7 (800) 123-45-67</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p><i class="fas fa-heart" style="color:#b45f2b;"></i> © 2024 Модный Гардероб — ваш стиль, наша забота</p>
+        </div>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
